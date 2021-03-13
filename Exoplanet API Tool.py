@@ -5,7 +5,7 @@
 
 
 '''IMPORTANT NOTES
-The NASA exoplanet archive uses SQL so the api requests have to include valid SQL statements.  The database returns CSV as the default file format.
+The NASA exoplanet archive uses SQL so the api requests have to include valid SQL statements.  The database returns CSV as the default file format.  I have coded it for json.
 
 The masses of planets are measured in comparison to Jupiter.  The earth has a mass of .00314 Jupiter Mass, so the code should be written to pick planets in this mass cateogry as earth-like.  The same is true of. the radii of planets, the earth has .091 Jupiter radius.
 
@@ -45,52 +45,120 @@ The required base URL for NASA exoplanet API requests:
         https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets
         
         for the exoplanet table with a query; queries use the syntax &select=parameter1,parameter2,etc:
+            '''
             
-            '''
-            '''
+'''
             PRIMARY QUERY BUILD FOR THE PULL FUNCTION
-https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,pl_letter,pl_name,pl_discmethod,pl_orbper,pl_bmass, pl_rad, pl_dens, pl_notes, 
+https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,pl_letter,pl_name,pl_discmethod,pl_orbper,pl_bmass, pl_rad, pl_dens, pl_notes
         '''
 #import statements
 import requests
 import csv 
-import tkinter
+import json
+'import tkinter'
 
 #global variables
+'''these variables will be used by different functions to define the value of the data pulled from the NASA API
 
+planet_mass -- pl_bmass
+planet_density -- pl_dens
+planet_distance_lightyears -- st_dist
+star_temperature -- st_teff
+star_mass -- st_mass
+planet_star_distance (planet to star during transit) -- pl_ratdor
+nasa_status -- pl_status
+'''
+
+planet_mass=0.0
+planet_density=0.0
+planet_distance_lightyears=0.0
+star_temperature=0
+star_mass= 0.0
+planet_star_distance= 0.0
+
+earth_mass = 0
+earth_density = 0
+earth_to_sol_distance = 0
+sol_temperature  = 0
+sol_mass = 0
 
 #functions
-define pull_earth_values():
+'''def pull_earth_like():
+#api operations
+#if the planet mass is correct and the density is correct and the distance to star is correct and the temperature of the star is correct and the mass of the star is correct then return the planet name, the host star, these data points, the lightyears distance and the nasa review code; for metrics accept results that are within 15% of earth values
+for items in sample:
+    if '''
 #this function pre-fills the search variables with values equal to the earth and allos the variation of those values by 15%, then queries the database for records that fit the requirements.
 
-define pull_current_values:
+'def pull_current_values:'
     #this function queries the database for the current value of the star and planet fiels provided in the interface, if there is no value provided a wildcard is used.
     
-define  reset():
+'define  reset():'
     #a function to reset the values in the interface
     
-define test_pull():
-    #a function for debugging that tests that the API request works and that values are returned.
+def test_pull():
+    query='https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,pl_name,pl_orbper,pl_ratdor,pl_dens,pl_status,st_dist,st_teff,st_mass&format=json'
+    response = requests.get(query)
+    print('status: ',response.status_code)
+    print('header: ',response.headers['content-type'])
+    print('encoding: ',response.encoding)
+    print('text: /p',response.text)
+    #print('json version: /p',response.json())
+    data_dictionary= response.json()
+    print(type(data_dictionary))
+    print(len(data_dictionary))
+    print("type of entries in the list is ", type(data_dictionary[0]))
+    print(data_dictionary)
+    #data_dictionary = data_dictionary[0]
+    #print(type(data_dictionary))
+    #print(data_dictionary)
+    name_records=[]
+    parameter = "pl_name"
+    #****
+    #this is the code portion for pulling the data for analysis that works
+    #****
+    for entries in data_dictionary:
+        name=entries.get(parameter)
+        name_records.append(name)
+    '''for entries in data_dictionary:
+        record = data_dictionary[entries]
+        #print(len(record))
+        for key in record:
+            #print(key)
+            #temp_list=[data_dictionary[name_counter]]
+            if parameter == key:
+                print(get(record[key]))
+                entry = get(record[key])
+                name_records.append(entry) 
+                #name_counter = '''
+    print(name_records)
+    #data_dictionary = data_dictionary[0]
+    #print(type(data_dictionary))
+    #print(data_dictionary["pl_name"])
+    #i need a loop to hit a list and pull the names
+    #i'll try a for loop and a while loop
+
+#a function for debugging that tests that the API request works and that values are returned.
     
-define open_encyclopedia():
+'def open_encyclopedia():'
     #a function that scrapes the explanet encyclopedia using the field returned, with exception handling for planets with no entry.  The information is presented in the interface as a text string.
        
-define display_values():
+'def display_values():'
     #a function that uses the interface to display the values returned by a pull function in columns that can be scrolled.  
     
 '''bonus content functions for if there is extra time'''
     
-define export results():
+'def export results():'
     #a function that exports the results of a pull function to a csv that is stored in a local folder.  The export includes a copy of the search parameters that were submitted.
     
-define narrow_search():
+'def narrow_search():'
     #a function that uses the results to search them again, using new parameters entered by the user, but using only the current search returns.  This will clear the information pulled from the database and present the narrowed results as the new results set, which can then be narrowed again.  As with the pull, where no value is entered a wildcard is used.  Narrow is a sensible efficiency solution because it allows the user to work with the local data set instead of hitting the database over and over again.
     
-define load_from_CSV():
+'def load_from_CSV():'
     #a function that lets the user load the information from a locally located CSV instead of hittin the NASA database, so that data can be sorted when internet connectity is not available.
  
 '''Mainline Logic for testing'''    
-    
+test_pull()
     
 '''interace design area, remember to include the main loop'''    
        
