@@ -76,22 +76,59 @@ star_temperature=0
 star_mass= 0.0
 planet_star_distance= 0.0
 
-earth_mass = 0
-earth_density = 0
-earth_to_sol_distance = 0
-sol_temperature  = 0
-sol_mass = 0
+#earth_mass = 5.97219*10^24
+earth_density = 5.51
+#earth_to_sol_distance = 149600000
+sol_temperature  = 5778.0
+sol_mass = 1.0
 
 #functions
-'''def pull_earth_like():
-#api operations
-#if the planet mass is correct and the density is correct and the distance to star is correct and the temperature of the star is correct and the mass of the star is correct then return the planet name, the host star, these data points, the lightyears distance and the nasa review code; for metrics accept results that are within 15% of earth values
-for items in sample:
-    if '''
+def math_test():
+    global sol_mass
+    global sol_temperature
+    permass = sol_mass*0.15+sol_mass
+    perheat = sol_temperature*0.15+sol_temperature
+    print("The mass of the sun is",sol_mass,"and the temperature of the sun is ",sol_temperature)
+    print("with a 15% increase the stellar mass allowed for is",permass," and the stellar temperature allowed for is",perheat)
+
+def pull_earth_like():
+    query='https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=exoplanets&select=pl_hostname,pl_name,pl_orbper,pl_ratdor,pl_dens,pl_status,st_dist,st_teff,st_mass&format=json'
+    response = requests.get(query)
+    sample = response.json()
+    #if the the density is correct and the distance to star is correct and the temperature of the star is correct and the mass of the star is correct then return the planet name, the host star, these data points, the lightyears distance and the nasa review code; for metrics accept results that are within 15% of earth values
+    qualifying_planets = []
+    earth_value = 0.0
+    comparison_value = 0.0
+    for items in sample:
+        for properties in items:
+            if  items =='pl_dens':
+                comparison_value=items.get('pl_dens')
+                comparison_value=float(comparison_value)
+                earth_value = 5.51
+                targettop= earth_value*0.15+earth_value
+                targetbottom= earth_value-earth_value*0.15
+                if comparison_value <targettop and comparison_value >targetbottom:
+                    if items == 'st_teff':
+                        comparison_value=items.get('st_teff')
+                        comparison_value=float(comparison_value)
+                        earth_value=5778.0
+                        targettop=earth_value+earth_value*0.15
+                        targetbottom=earth_value-earth_value*0.15
+                        if comparison_value <targettop and comparison_value >targetbottom:
+                            if items == 'st_mass':
+                                comparison_value=items.get('st_mass')
+                                comparison_value=float(comparison_value)
+                                earth_value=1.0
+                                targettop=earth_value+earth_value*0.15
+                                targetbottom=earth_value-earth_value*0.15
+                                if comparison_value <targettop and comparison_value >targetbottom:
+                                    new_entry=items.get('pl_name')
+                                    qualifying_planets.append(new_entry)
+    print(qualifying_planets)                            
 #this function pre-fills the search variables with values equal to the earth and allos the variation of those values by 15%, then queries the database for records that fit the requirements.
 
 'def pull_current_values:'
-    #this function queries the database for the current value of the star and planet fiels provided in the interface, if there is no value provided a wildcard is used.
+    #this function queries the database for pthe current value of the star and planet fiels provided in the interface, if there is no value provided a wildcard is used.
     
 'define  reset():'
     #a function to reset the values in the interface
@@ -102,13 +139,13 @@ def test_pull():
     print('status: ',response.status_code)
     print('header: ',response.headers['content-type'])
     print('encoding: ',response.encoding)
-    print('text: /p',response.text)
+    #print('text: /p',response.text)
     #print('json version: /p',response.json())
     data_dictionary= response.json()
     print(type(data_dictionary))
     print(len(data_dictionary))
     print("type of entries in the list is ", type(data_dictionary[0]))
-    print(data_dictionary)
+    #print(data_dictionary)
     #data_dictionary = data_dictionary[0]
     #print(type(data_dictionary))
     #print(data_dictionary)
@@ -158,7 +195,9 @@ def test_pull():
     #a function that lets the user load the information from a locally located CSV instead of hittin the NASA database, so that data can be sorted when internet connectity is not available.
  
 '''Mainline Logic for testing'''    
-test_pull()
+#test_pull()
+pull_earth_like()
+math_test()
     
 '''interace design area, remember to include the main loop'''    
        
