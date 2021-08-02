@@ -2,7 +2,7 @@
 #a script to consider strings and hunt for specific words, then respond based upon the word detected.
 
 #a dictionary of relevant words that the script will hunt for.
-target_list = {'deku':'god damn nerd','bakugou':'total alpha king', 'todoroki':'fucking edgelord'}
+target_list = {'deku':'nerd','bakugou':'king', 'todoroki':'edgelord'}
 target_string = ''
 compare_list=[]
 
