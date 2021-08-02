@@ -75,10 +75,10 @@ def compare_words():
             nochoice==True'''
     if conclusion=='':
         #print(relevant_words)
-        print("Indecisive?  Or could it be that you don't watch MHA?  What a loser.")
+        print("Indecisive?  Or could it be that you don't watch MHA?")
     elif multichoice==True:
         #print(relevant_words)
-        print("I don't have any time for wishy washy weaklings who can't make up their minds.\nMention only one hero next time.")
+        print("I don't have any time for people who cannot make up their minds.\nMention only one hero next time.")
     else:
         #print(relevant_words)
         print("I see you mentioned ",conclusion," so I guess you prefer a hero who is a ",target_list[conclusion],".")
@@ -107,7 +107,7 @@ def compare_words():
 '''    if multichoice==False and nochoice==False:
         print("I see you mentioned ",conclusion," so I guess you prefer a hero who is a ",target_list[conclusion])
     elif multichoice==True and nochoice==False:
-        print('No wishy washy bullshit, only tone hero can be chosen.')
+        print('No wishy washy nonsense, only one hero can be chosen.')
     else:
         print("It's okay if you're still thinking of who is your favorite.")
         
